@@ -25,7 +25,7 @@ public class ReadNfcTag extends AppCompatActivity {
 
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
-    private TextView text;
+    private TextView link;
 
 
     @Override
@@ -33,11 +33,16 @@ public class ReadNfcTag extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_nfc_tag);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        link = findViewById(R.id.link);
 
         pendingIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, this.getClass())
                         .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+    }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
         if (nfcAdapter != null) {
             if (!nfcAdapter.isEnabled())
                 showWirelessSettings();
@@ -102,7 +107,7 @@ public class ReadNfcTag extends AppCompatActivity {
             String str = record.str();
             builder.append(str).append("\n");
         }
-        text.setText(builder.toString());
+        link.setText(builder.toString());
     }
 
     private String toHex(byte[] bytes) {
